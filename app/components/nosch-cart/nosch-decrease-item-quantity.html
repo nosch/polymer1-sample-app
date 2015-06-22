@@ -1,0 +1,42 @@
+<dom-module id="nosch-decrease-item-quantity">
+    <link rel="import" href="../../../bower_components/paper-icon-button/paper-icon-button.html">
+
+    <style>
+        :host {
+            display: inline-block;
+        }
+
+        :host paper-icon-button {
+            padding: 0;
+        }
+    </style>
+
+    <template>
+        <paper-icon-button icon="arrow-drop-down"></paper-icon-button>
+    </template>
+</dom-module>
+
+<script>
+    (function () {
+        Polymer({
+            is: 'nosch-decrease-item-quantity',
+
+            properties: {
+                cartItem: {
+                    type: Object,
+                    value: function () {
+                        return {};
+                    }
+                }
+            },
+
+            listeners: {
+                'click': '_clickHandler'
+            },
+
+            _clickHandler: function () {
+                this.fire('decrease-cart-item-quantity', this.cartItem);
+            }
+        });
+    })();
+</script>

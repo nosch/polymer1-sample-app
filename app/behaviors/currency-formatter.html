@@ -1,0 +1,20 @@
+<script>
+    var ShopBehaviors = ShopBehaviors || {};
+
+    ShopBehaviors.CurrencyFormatter = {
+        _toLocalCurrency: function (number, locale, code) {
+            locale = locale || 'de-DE';
+            code = code || 'EUR';
+
+            if (!number) {
+                return;
+            }
+
+            return number.toLocaleString(locale, {
+                style: 'currency',
+                currency: code,
+                minimumFractionDigits: 2
+            });
+        }
+    }
+</script>

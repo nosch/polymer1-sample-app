@@ -1,0 +1,30 @@
+<dom-module id="nosch-add-to-cart">
+    <link rel="import" href="../../../bower_components/paper-icon-button/paper-icon-button.html">
+
+    <template>
+        <paper-icon-button icon="add-shopping-cart"></paper-icon-button>
+    </template>
+</dom-module>
+
+<script>
+    (function () {
+        Polymer({
+            is: 'nosch-add-to-cart',
+
+            properties: {
+                productId: {
+                    type: Number,
+                    value: 0
+                }
+            },
+
+            listeners: {
+                'click': '_clickHandler'
+            },
+
+            _clickHandler: function () {
+                this.fire('add-item-to-cart', this.productId);
+            }
+        });
+    })();
+</script>

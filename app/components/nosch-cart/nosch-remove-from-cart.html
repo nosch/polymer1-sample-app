@@ -1,0 +1,30 @@
+<dom-module id="nosch-remove-from-cart">
+    <link rel="import" href="../../../bower_components/paper-icon-button/paper-icon-button.html">
+
+    <template>
+        <paper-icon-button icon="highlight-off"></paper-icon-button>
+    </template>
+</dom-module>
+
+<script>
+    (function () {
+        Polymer({
+            is: 'nosch-remove-from-cart',
+
+            properties: {
+                cartItemId: {
+                    type: Number,
+                    value: 0
+                }
+            },
+
+            listeners: {
+                'click': '_clickHandler'
+            },
+
+            _clickHandler: function () {
+                this.fire('remove-item-from-cart', this.cartItemId);
+            }
+        });
+    })();
+</script>

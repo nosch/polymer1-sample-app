@@ -1,0 +1,15 @@
+{
+  "name": "polymer1-shopping-cart",
+  "private": true,
+  "version": "0.0.1",
+  "scripts": {
+    "start": "http-server -s -o -a localhost",
+    "postinstall": "bower install",
+    "build": "vulcanize index.html > build.html"
+  },
+  "devDependencies": {
+    "bower": "^1.4.1",
+    "http-server": "^0.8.0",
+    "vulcanize": "^1.9.3"
+  }
+}

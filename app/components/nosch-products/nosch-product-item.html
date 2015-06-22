@@ -1,0 +1,47 @@
+<dom-module id="nosch-product-item">
+    <link rel="import" href="../../behaviors/currency-formatter.html">
+    <link rel="import" href="nosch-add-to-cart.html">
+
+    <style>
+        :host .data-table-cell.table-body {
+            padding: 12px 24px;
+            font-weight: 400;
+            font-size: 13px;
+        }
+
+        :host .data-table-cell.table-body.action {
+            text-align: end;
+        }
+    </style>
+
+    <template>
+        <td class="data-table-cell table-body">{{productItem.name}}</td>
+        <td class="data-table-cell table-body">
+            <strong>{{_toLocalCurrency(productItem.price)}}</strong>
+        </td>
+        <td class="data-table-cell table-body action">
+            <nosch-add-to-cart product-id="[[productItem.id]]"></nosch-add-to-cart>
+        </td>
+    </template>
+</dom-module>
+
+<script>
+    (function () {
+        Polymer({
+            is: 'nosch-product-item',
+
+            extends: 'tr',
+
+            behaviors: [ShopBehaviors.CurrencyFormatter],
+
+            properties: {
+                productItem: {
+                    type: Object,
+                    value: function () {
+                        return {};
+                    }
+                }
+            }
+        });
+    })();
+</script>

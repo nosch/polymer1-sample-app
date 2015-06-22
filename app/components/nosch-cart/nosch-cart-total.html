@@ -1,0 +1,46 @@
+<dom-module id="nosch-cart-total">
+    <link rel="import" type="text/html" href="../../behaviors/currency-formatter.html">
+
+    <style>
+        :host .data-table-cell.table-foot {
+            padding: 12px 24px;
+            font-weight: 400;
+            font-size: 13px;
+        }
+
+        :host .data-table-cell.table-foot.total {
+            text-align: end;
+            padding-right: 0;
+        }
+    </style>
+
+    <template>
+        <td></td>
+        <td class="data-table-cell table-foot total">
+            <strong>Total:</strong>
+        </td>
+        <td class="data-table-cell table-foot">
+            <strong>{{_toLocalCurrency(cartTotal)}}</strong>
+        </td>
+        <td></td>
+    </template>
+</dom-module>
+
+<script>
+    (function () {
+        Polymer({
+            is: 'nosch-cart-total',
+
+            extends: 'tr',
+
+            behaviors: [ShopBehaviors.CurrencyFormatter],
+
+            properties: {
+                cartTotal: {
+                    type: Number,
+                    value: 0.00
+                }
+            }
+        });
+    })();
+</script>

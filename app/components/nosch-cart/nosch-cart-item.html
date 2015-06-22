@@ -1,0 +1,54 @@
+<dom-module id="nosch-cart-item">
+    <link rel="import" href="../../behaviors/currency-formatter.html">
+    <link rel="import" href="nosch-increase-item-quantity.html">
+    <link rel="import" href="nosch-decrease-item-quantity.html">
+    <link rel="import" href="nosch-remove-from-cart.html">
+
+    <style>
+        :host .data-table-cell.table-body {
+            padding: 12px 24px;
+            font-weight: 400;
+            font-size: 13px;
+        }
+
+        :host .data-table-cell.table-body.action {
+            text-align: end;
+        }
+    </style>
+
+    <template>
+        <td class="data-table-cell table-body">{{cartItem.name}}</td>
+        <td class="data-table-cell table-body">
+            <span>{{cartItem.quantity}}</span>
+            <nosch-increase-item-quantity cart-item="[[cartItem]]"></nosch-increase-item-quantity>
+            <nosch-decrease-item-quantity cart-item="[[cartItem]]"></nosch-decrease-item-quantity>
+        </td>
+        <td class="data-table-cell table-body">
+            <span>{{_toLocalCurrency(cartItem.subTotal)}}</span>
+        </td>
+        <td class="data-table-cell table-body action">
+            <nosch-remove-from-cart cart-item-id="[[cartItem.id]]"></nosch-remove-from-cart>
+        </td>
+    </template>
+</dom-module>
+
+<script>
+    (function () {
+        Polymer({
+            is: 'nosch-cart-item',
+
+            extends: 'tr',
+
+            behaviors: [ShopBehaviors.CurrencyFormatter],
+
+            properties: {
+                cartItem: {
+                    type: Object,
+                    value: function () {
+                        return {};
+                    }
+                }
+            }
+        });
+    })();
+</script>

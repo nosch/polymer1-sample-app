@@ -1,0 +1,110 @@
+<dom-module id="nosch-cart">
+    <link rel="import" href="nosch-cart-is-empty.html">
+    <link rel="import" href="nosch-cart-item.html">
+    <link rel="import" href="nosch-cart-total.html">
+
+    <style>
+        :host {
+            display: block;
+        }
+
+        :host .data-table {
+            width: 100%;
+            border-collapse: collapse;
+            background: white;
+            border-radius: 3px;
+            border: 1px solid #e5e5e5;
+        }
+
+        :host .data-table-row.table-head th {
+            text-align: left;
+            border-bottom: 1px solid #e5e5e5;
+            padding: 0 24px;
+            line-height: 56px;
+            font-size: 12px;
+            font-weight: 500;
+            color: rgba(0, 0, 0, 0.54);
+        }
+
+        :host .data-table-row.table-body {
+            overflow: hidden;
+            height: 48px;
+        }
+
+        :host .data-table-row.table-body:hover {
+            background: #fafafa;
+        }
+
+        :host .data-table-row.table-foot {
+            border-top: 1px solid #a2a2a2;
+        }
+
+        @media (max-width: 895px) {
+            h2.paper-font-headline {
+                font-size: 18px;
+                font-weight: bold;
+            }
+        }
+    </style>
+
+    <template>
+        <h2 class="paper-font-headline">{{heading}}</h2>
+
+        <table class="data-table">
+            <template is="dom-if" if="{{!cartItems.length}}">
+                <tbody>
+                    <tr is="nosch-cart-is-empty"
+                        class="data-table-row table-body"></tr>
+                </tbody>
+            </template>
+
+            <template is="dom-if" if="{{cartItems.length}}">
+                <thead>
+                    <tr class="data-table-row table-head">
+                        <th>Product</th>
+                        <th>Quantity</th>
+                        <th>Subtotal</th>
+                        <th></th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <template is="dom-repeat" items={{cartItems}}>
+                        <tr is="nosch-cart-item"
+                            cart-item="[[item]]"
+                            class="data-table-row table-body"></tr>
+                    </template>
+                </tbody>
+                <tfoot>
+                    <tr is="nosch-cart-total"
+                        cart-total="[[cartTotal]]"
+                        class="data-table-row table-foot"></tr>
+                </tfoot>
+            </template>
+        </table>
+    </template>
+</dom-module>
+
+<script>
+    (function () {
+        Polymer({
+            is: 'nosch-cart',
+
+            properties: {
+                heading: {
+                    type: String,
+                    value: '-- Apply heading! --'
+                },
+                cartItems: {
+                    type: Array,
+                    value: function () {
+                        return [];
+                    }
+                },
+                cartTotal: {
+                    type: Number,
+                    value: 0.00
+                }
+            }
+        });
+    })();
+</script>

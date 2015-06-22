@@ -1,0 +1,37 @@
+<dom-module id="nosch-cart-is-empty">
+    <style>
+        :host .data-table-cell.table-body {
+            padding: 12px 24px;
+            font-weight: 400;
+            font-size: 13px;
+        }
+
+        :host .data-table-cell.table-body.no-data {
+            text-align: center;
+            background: #ffffff;
+        }
+    </style>
+
+    <template>
+        <td class="data-table-cell table-body no-data" colspan="4">
+            <strong>{{message}}</strong>
+        </td>
+    </template>
+</dom-module>
+
+<script>
+    (function () {
+        Polymer({
+            is: 'nosch-cart-is-empty',
+
+            extends: 'tr',
+
+            properties: {
+                message: {
+                    type: String,
+                    value: '...is empty'
+                }
+            }
+        });
+    })();
+</script>

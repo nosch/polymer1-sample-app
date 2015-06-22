@@ -1,0 +1,265 @@
+<dom-module id="nosch-shop">
+    <link rel="import" href="../nosch-products/nosch-products.html">
+    <link rel="import" href="../nosch-cart/nosch-cart.html">
+    <link rel="import" href="../../../bower_components/paper-toast/paper-toast.html">
+
+    <style>
+        :host {
+            display: block;
+            padding: 15px;
+            @apply(--layout-horizontal);
+        }
+
+        :host .product-list, :host .shopping-cart {
+            @apply(--layout-flex-2);
+        }
+
+        :host .space-right {
+            margin-right: 5px;
+        }
+
+        :host .space-left {
+            margin-left: 5px;
+        }
+
+        @media (max-width: 895px) {
+            :host {
+                @apply(--layout-vertical);
+            }
+
+            :host .product-list, :host .shopping-cart {
+                margin: 0;
+            }
+        }
+    </style>
+
+    <template>
+        <div class="product-list space-right">
+            <nosch-products heading="Our Products"
+                            products="[[products]]"></nosch-products>
+        </div>
+        <div class="shopping-cart space-left">
+            <nosch-cart heading="Your Cart"
+                        cart-items="[[cartItems]]"
+                        cart-total="[[cartTotal]]"></nosch-cart>
+        </div>
+
+        <paper-toast id="messenger"
+                     text="INFO: your cart has been updated"
+                     duration="2000"></paper-toast>
+    </template>
+</dom-module>
+
+<script>
+    (function () {
+        Polymer({
+            is: 'nosch-shop',
+
+            listeners: {
+                'add-item-to-cart': 'onAddItemToCart',
+                'remove-item-from-cart': 'onRemoveItemFromCart',
+                'increase-cart-item-quantity': 'onIncreaseCartItemQuantity',
+                'decrease-cart-item-quantity': 'onDecreaseCartItemQuantity'
+            },
+
+            ready: function () {
+                this.products = [{
+                    id: 'product_' + Math.random().toString(36).substr(2, 10),
+                    name: 'Product 1',
+                    price: 22.95
+                }, {
+                    id: 'product_' + Math.random().toString(36).substr(2, 10),
+                    name: 'Product 2',
+                    price: 8.45
+                }, {
+                    id: 'product_' + Math.random().toString(36).substr(2, 10),
+                    name: 'Product 3',
+                    price: 134.95
+                }, {
+                    id: 'product_' + Math.random().toString(36).substr(2, 10),
+                    name: 'Product 4',
+                    price: 54.25
+                }, {
+                    id: 'product_' + Math.random().toString(36).substr(2, 10),
+                    name: 'Product 5',
+                    price: 407.95
+                }, {
+                    id: 'product_' + Math.random().toString(36).substr(2, 10),
+                    name: 'Product 6',
+                    price: 3.15
+                }];
+
+                this.cartItems = [];
+
+                this.cartTotal = 0.00;
+
+                this.messenger = this.$.messenger;
+            },
+
+            onAddItemToCart: function (event) {
+                var productId = event.detail;
+                var index = this._getCartIndexByProductId(productId);
+
+                if (index !== -1) {
+                    this._updateCartItemQuantity(this.cartItems[index], 1);
+                    this._updateCartItemSubTotal(this.cartItems[index]);
+                } else {
+                    this._addCartItem(productId);
+                }
+
+                this._updateCartTotal();
+            },
+
+            onRemoveItemFromCart: function (event) {
+                var id = event.detail;
+
+                this._removeCartItem(id);
+                this._updateCartTotal();
+            },
+
+            onIncreaseCartItemQuantity: function (event) {
+                var item = event.detail;
+
+                this._updateCartItemQuantity(item, 1);
+                this._updateCartItemSubTotal(item);
+                this._updateCartTotal();
+            },
+
+            onDecreaseCartItemQuantity: function (event) {
+                var item = event.detail;
+
+                if (item.quantity > 1) {
+                    this._updateCartItemQuantity(item, -1);
+                } else {
+                    this._removeCartItem(item.id);
+                }
+
+                this._updateCartItemSubTotal(item);
+                this._updateCartTotal();
+            },
+
+            _addCartItem: function (id) {
+                var product = this._getProductById(id);
+
+                if (product) {
+                    this.push('cartItems', this._createCartItemModel(product));
+                    this._showMessage('product was added to cart');
+                }
+            },
+
+            _removeCartItem: function (id) {
+                var index = this._getCartIndexById(id);
+
+                if (index !== -1) {
+                    this.splice('cartItems', index, 1);
+                    this._showMessage('product was removed from cart');
+                }
+            },
+
+            _updateCartItemQuantity: function (item, incr) {
+                var index = this._getCartIndexById(item.id);
+
+                if (index !== -1) {
+                    this.set(
+                        'cartItems.' + index + '.quantity',
+                        this.cartItems[index].quantity + (incr)
+                    );
+                }
+            },
+
+            _updateCartItemSubTotal: function (item) {
+                var product = this._getProductById(item.productId);
+                var index = this._getCartIndexById(item.id);
+
+                if (index !== -1 && product) {
+                    this.set(
+                        'cartItems.' + index + '.subTotal',
+                        product.price * this.cartItems[index].quantity
+                    );
+
+                    this._showMessage('cart total was updated');
+                }
+            },
+
+            _updateCartTotal: function () {
+                var total = 0.00;
+
+                this.cartItems.map(function (item) {
+                    total = (total + item.subTotal);
+                });
+
+                this.set('cartTotal', total);
+            },
+
+            _getProductById: function (id) {
+                return this.products.filter(function (product) {
+                    return product.id === id;
+                })[0];
+            },
+
+            _getCartIndexById: function (id) {
+                var cartIndex = -1;
+
+                this.cartItems.map(function (item, index) {
+                    if (item.id === id) {
+                        cartIndex = index;
+                    }
+                });
+
+                return cartIndex;
+            },
+
+            _getCartIndexByProductId: function (productId) {
+                var cartIndex = -1;
+
+                this.cartItems.map(function (item, index) {
+                    if (item.productId === productId) {
+                        cartIndex = index;
+                    }
+                });
+
+                return cartIndex;
+            },
+
+            _createCartItemModel: function (data) {
+                return Object.defineProperties({}, {
+                    'id': {
+                        value: 'item_' + Math.random().toString(36).substr(2, 10),
+                        writable: true
+                    },
+                    'productId': {
+                        value: data.id,
+                        writable: true
+                    },
+                    'name': {
+                        value: data.name,
+                        writable: true
+                    },
+                    'price': {
+                        value: data.price,
+                        writable: true
+                    },
+                    'subTotal': {
+                        value: data.price,
+                        writable: true
+                    },
+                    'quantity': {
+                        value: 1,
+                        writable: true
+                    }
+                });
+            },
+
+            _showMessage: function (message) {
+                var messagePrefix = 'INFO: ';
+                this.messenger.text = messagePrefix + message;
+
+                if (this.messenger.visible) {
+                    this.messenger.hide();
+                }
+
+                this.messenger.show();
+            }
+        });
+    })();
+</script>

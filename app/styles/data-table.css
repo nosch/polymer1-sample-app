@@ -1,0 +1,73 @@
+.data-table {
+    width: 100%;
+    border-collapse: collapse;
+    background: white;
+    border-radius: 3px;
+    border: 1px solid #e5e5e5;
+}
+
+.data-table-row.table-head th {
+    text-align: left;
+    border-bottom: 1px solid #e5e5e5;
+    padding: 0 24px;
+    line-height: 56px;
+    font-size: 12px;
+    font-weight: 500;
+    color: rgba(0, 0, 0, 0.54);
+}
+
+.data-table-row.table-body {
+    overflow: hidden;
+    height: 48px;
+    border-bottom: 1px solid #e5e5e5;
+}
+
+.data-table-row.table-body:first-child {
+    margin-top: 8px;
+}
+
+.data-table-row.table-body:hover {
+    background: #fafafa;
+}
+
+.data-table-cell.table-body,
+.data-table-cell.table-foot {
+    padding: 12px 24px;
+    font-weight: 400;
+    font-size: 13px;
+}
+
+.data-table-row.table-body td.multi-line {
+    white-space: nowrap;
+    line-height: 24px;
+    overflow: hidden;
+    color: #606060;
+    text-overflow: ellipsis;
+    max-width: 120px;
+}
+
+.data-table-cell.table-body.action {
+    text-align: end;
+}
+
+.data-table-cell.table-foot.total {
+    text-align: end;
+    padding-right: 0;
+}
+
+.data-table-cell.table-body.no-data {
+    text-align: center;
+    background: #ffffff;
+}
+
+.data-table-row.table-foot {
+    border-top: 1px solid #a2a2a2;
+}
+
+a {
+    font-weight: bold;
+}
+
+a, iron-icon {
+    cursor: pointer;
+}
