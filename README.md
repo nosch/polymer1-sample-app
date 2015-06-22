@@ -10,8 +10,8 @@ It's just a simple sample app (shopping cart) build with the new [Polymer 1.0](h
   
 ## Installation
 
-    1. $ git clone git@github.com:nosch/polymer1-sample.git "polymer1-sample"
-    2. $ cd polymer1-sample
+    1. $ git clone git@github.com:nosch/polymer1-sample-app.git "polymer1-sample-app"
+    2. $ cd polymer1-sample-app
     3. $ npm install
 
 ## Running the app
